@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,18 @@
   to {
     transform: rotate(360deg);
   }
+} */
+#root{
+  margin-left: 15%;
+  margin-top: 100px;
+}
+.todoItem {
+  display: flex;
+  width: 200px;
+  justify-content: space-between;
+}
+
+.completed {
+  color: #d9d9d9;
+  text-decoration: line-through;
 }
