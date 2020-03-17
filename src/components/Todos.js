@@ -4,7 +4,7 @@ import { TodoItem } from "./TodoItem";
 
 class Todos extends React.Component {
   renderTodos = () => {
-    const { data } = this.props;
+    const { data, activeTab } = this.props;
     const { handleEditTodos } = this.props;
     const { handleRemoveTodos } = this.props;
     const { handleCheckboxChange } = this.props;
@@ -17,6 +17,7 @@ class Todos extends React.Component {
           <TodoItem
             key={item.id}
             data={item}
+            tab={activeTab}
             onSave={handleEditTodos}
             validate={validate}
             onChange={handleCheckboxChange}
@@ -24,23 +25,13 @@ class Todos extends React.Component {
           />
         );
       });
-    } else {
-      TodosTemplate = <p>К сожалению новостей нет</p>;
     }
 
     return TodosTemplate;
   };
+
   render() {
-    const { data } = this.props;
-    const active = data.filter(todo => todo.isCompleted === false);
-    return (
-      <div className="todos">
-        {this.renderTodos()}
-        {data.length ? (
-          <strong className={"todos__count"}>items: {active.length}</strong>
-        ) : null}
-      </div>
-    );
+    return <div className="todos">{this.renderTodos()}</div>;
   }
 }
 

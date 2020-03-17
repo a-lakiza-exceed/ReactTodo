@@ -4,11 +4,11 @@ import PropTypes from "prop-types";
 class TodoItem extends React.Component {
   state = {
     isEditing: false,
-    text: this.props.data.text,
+    text: this.props.data.text
   };
 
   handleDoubleClick = () => {
-    this.setState({ isEditing: "true" });
+    this.setState({ isEditing: true });
   };
 
   handleChange = e => {
@@ -25,7 +25,7 @@ class TodoItem extends React.Component {
     const text = this.state.text;
 
     if (validate(text)) {
-      this.setState({ isEditing: "false" });
+      this.setState({ isEditing: false });
       this.props.onSave(this.props.data.id, this.state.text);
     }
   };
@@ -37,51 +37,67 @@ class TodoItem extends React.Component {
 
   render() {
     const todo = this.props.data;
-    const { removeTodo } = this.props;
-    const classes = [];
+    const { removeTodo, tab } = this.props;
+    const textClasses = ["itemText"];
+    const itemClasses = ["todoItem"];
+    if (tab !== null) {
+      if (todo.isCompleted !== tab) {
+        itemClasses.push("hidden");
+      }
+    }
     if (todo.isCompleted) {
-      classes.push("completed");
+      textClasses.push("completed");
     }
     let item;
-    if (this.state.isEditing === "true") {
+    if (this.state.isEditing === true) {
       item = (
-        <li>
+        <div>
           <input
-            editing={this.state.isEditing}
+            className="input"
             onChange={this.handleChange}
             onKeyDown={this.onKeyDownHandler}
             onBlur={this.onBlurHandler}
             value={this.state.text}
           />
-        </li>
+        </div>
       );
     } else {
       item = (
-        <li className="todoItem">
+        <div className={itemClasses.join(" ")}>
           <input
+            className="inp-cbx"
+            id={todo.id + "input"}
             type="checkbox"
             checked={todo.isCompleted}
             onChange={this.handleCheckBoxChange}
           />
-          <p
-            className={classes.join(" ")}
+          <label className="cbx" htmlFor={todo.id + "input"}>
+            <span>
+              <svg width="12px" height="9px" viewBox="0 0 12 9">
+                <polyline points="1 5 4 8 11 1"></polyline>
+              </svg>
+            </span>
+          </label>
+          <span
+            className={textClasses.join(" ")}
             onDoubleClick={this.handleDoubleClick}
           >
-            {todo.text}{" "}
-          </p>
-          <button onClick={() => removeTodo(todo.id)}>&times;</button>
-        </li>
+            {todo.text}
+          </span>
+          <button
+            className="removeButton"
+            onClick={() => removeTodo(todo.id)}
+          ></button>
+        </div>
       );
     }
-    //console.log(text, completed)
-    //const { visible } = this.state
-    return <div>{item}</div>;
+    return <React.Fragment>{item}</React.Fragment>;
   }
 }
 
 TodoItem.propTypes = {
   data: PropTypes.shape({
-    id: PropTypes.number.isRequired, // добавили id, это число, обязательно
+    id: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired
   })
 };

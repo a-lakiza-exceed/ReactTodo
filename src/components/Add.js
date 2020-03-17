@@ -19,8 +19,8 @@ class Add extends React.Component {
     }
   };
   handleChange = e => {
-    const { id, value } = e.currentTarget;
-    this.setState({ [id]: value });
+    const { value } = e.currentTarget;
+    this.setState({ text: value });
   };
   submitHandler = e => {
     e.preventDefault();
@@ -28,22 +28,22 @@ class Add extends React.Component {
       text: ""
     });
   };
-  // onBtnClickHandler = e => {
-  //     e.preventDefault();
-  //     React.findDOMNode(this.refs.input).focus();
-  //   }
 
   render() {
     return (
-      <form className="add" onSubmit={this.submitHandler}>
-        <input type="checkbox" onChange={this.props.onCheckboxChange}/>
+      <form className="addForm" onSubmit={this.submitHandler}>
         <input
-          id="text"
+          type="checkbox"
+          className="toggleAll"
+          onChange={this.props.onCheckboxChange}
+        />
+        <input
+          id="newItem"
+          className="input"
           type="text"
           autoFocus={true}
           onChange={this.handleChange}
           onKeyDown={this.onKeyDownHandler}
-          className="newItemInput"
           placeholder="What needs to be done?"
           value={this.state.text}
         />
