@@ -11,7 +11,6 @@ class Add extends React.Component {
       const text = this.state.text;
       if (validate(text)) {
         this.props.onAddTodos({
-          id: +new Date(),
           isCompleted: false,
           text
         });

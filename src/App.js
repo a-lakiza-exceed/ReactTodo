@@ -3,6 +3,7 @@ import { Add } from "./components/Add";
 import { Todos } from "./components/Todos";
 import { Footer } from "./components/Footer";
 import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
@@ -12,12 +13,35 @@ class App extends React.Component {
     isAllChecked: false,
     activeTab: null
   };
+  loadData = () => {
+    axios.get(`http://localhost:2000/todos/`).then(res => {
+      const todos = [...res.data].map(todo => {
+        const newTodo = {
+          id: todo._id,
+          text: todo.text,
+          isCompleted: todo.isCompleted
+        };
+        return newTodo;
+      });
+      this.setState({ todos });
+    });
+  };
+  componentDidMount() {
+    this.loadData();
+  }
   addNotify = text => toast.success(text);
   removeNotify = text => toast.error(text);
   handleAddTodos = data => {
-    const nextTodo = [data, ...this.state.todos];
-    this.addNotify("Added todo: " + data.text)
-    this.setState({ todos: nextTodo });
+    this.addNotify("Added todo: " + data.text);
+
+    axios
+      .post(`http://localhost:2000/todos/create/`, {
+        text: data.text,
+        isCompleted: data.isCompleted
+      })
+      .then(res => {
+        this.loadData();
+      });
   };
 
   handleEditTodos = (id, text) => {
@@ -83,7 +107,7 @@ class App extends React.Component {
         isAllChecked: false
       });
     }
-    this.removeNotify("Removed: " + text)
+    this.removeNotify("Removed: " + text);
     this.setState({
       todos: todos
     });
@@ -108,6 +132,7 @@ class App extends React.Component {
     const { todos, activeTab, isAllChecked } = this.state;
     const active = todos.filter(todo => todo.isCompleted === false);
     const completed = todos.length - active.length;
+
     return (
       <React.Fragment>
         <h1>todos</h1>
