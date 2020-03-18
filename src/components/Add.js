@@ -35,6 +35,7 @@ class Add extends React.Component {
         <input
           type="checkbox"
           className="toggleAll"
+          checked={this.props.isAllChecked}
           onChange={this.props.onCheckboxChange}
         />
         <input

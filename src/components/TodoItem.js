@@ -21,6 +21,8 @@ class TodoItem extends React.Component {
     this.props.onChange(this.props.data.id);
   };
   onBlurHandler = () => {
+    console.log('work');
+    
     const { validate } = this.props;
     const text = this.state.text;
 
@@ -86,7 +88,7 @@ class TodoItem extends React.Component {
           </span>
           <button
             className="removeButton"
-            onClick={() => removeTodo(todo.id)}
+            onClick={() => removeTodo(todo.id, todo.text)}
           ></button>
         </div>
       );
