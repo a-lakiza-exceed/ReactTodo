@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Checkbox } from "./Checkbox";
 
 class TodoItem extends React.Component {
   state = {
@@ -66,20 +67,10 @@ class TodoItem extends React.Component {
     } else {
       item = (
         <div className={itemClasses.join(" ")}>
-          <input
-            className="inp-cbx"
-            id={todo.id + "input"}
-            type="checkbox"
-            checked={todo.isCompleted}
-            onChange={this.handleCheckBoxChange}
+          <Checkbox
+            handleCheckBoxChange={this.handleCheckBoxChange}
+            todo={todo}
           />
-          <label className="cbx" htmlFor={todo.id + "input"}>
-            <span>
-              <svg width="12px" height="9px" viewBox="0 0 12 9">
-                <polyline points="1 5 4 8 11 1"></polyline>
-              </svg>
-            </span>
-          </label>
           <span
             className={textClasses.join(" ")}
             onDoubleClick={this.handleDoubleClick}
@@ -100,8 +91,14 @@ class TodoItem extends React.Component {
 TodoItem.propTypes = {
   data: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired
-  })
+    text: PropTypes.string.isRequired,
+    isCompleted: PropTypes.bool.isRequired
+  }),
+  tab: PropTypes.oneOf([null, Boolean]),
+  onSave: PropTypes.func.isRequired,
+  validate: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  removeTodo: PropTypes.func.isRequired
 };
 
 export { TodoItem };

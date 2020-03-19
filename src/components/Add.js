@@ -56,7 +56,10 @@ class Add extends React.Component {
 }
 
 Add.propTypes = {
-  onAddTodos: PropTypes.func.isRequired
+  onAddTodos: PropTypes.func.isRequired,
+  isAllChecked: PropTypes.bool.isRequired,
+  validate: PropTypes.func.isRequired,
+  onCheckboxChange: PropTypes.func.isRequired
 };
 
 export { Add };

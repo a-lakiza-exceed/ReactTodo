@@ -1,11 +1,10 @@
 import React from "react";
-//import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 class Footer extends React.Component {
   render() {
-    const { active, completed } = this.props;
+    const { active, completed, handleClickFilterButton } = this.props;
     const itemWord = active === 1 ? "item" : "items";
-    const { handleClickFilterButton } = this.props;
     return (
       <div className="footer">
         <span className="activeItemsCount">
@@ -51,5 +50,13 @@ class Footer extends React.Component {
     );
   }
 }
+
+Footer.propTypes = {
+  active: PropTypes.number.isRequired,
+  completed: PropTypes.number.isRequired,
+  activeTab: PropTypes.oneOf([null, Boolean]),
+  handleClickClear: PropTypes.func.isRequired,
+  handleClickFilterButton: PropTypes.func.isRequired
+};
 
 export { Footer };

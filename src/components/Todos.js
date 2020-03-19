@@ -4,11 +4,14 @@ import { TodoItem } from "./TodoItem";
 
 class Todos extends React.Component {
   renderTodos = () => {
-    const { data, activeTab } = this.props;
-    const { handleEditTodos } = this.props;
-    const { handleRemoveTodos } = this.props;
-    const { handleCheckboxChange } = this.props;
-    const { validate } = this.props;
+    const {
+      data,
+      activeTab,
+      handleEditTodos,
+      validate,
+      handleRemoveTodos,
+      handleCheckboxChange
+    } = this.props;
     let TodosTemplate = null;
     if (data.length) {
       TodosTemplate = data.map(function(item) {
@@ -34,7 +37,12 @@ class Todos extends React.Component {
 }
 
 Todos.propTypes = {
-  data: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
+  activeTab: PropTypes.oneOf([null, Boolean]),
+  handleEditTodos: PropTypes.func.isRequired,
+  handleCheckboxChange: PropTypes.func.isRequired,
+  validate: PropTypes.func.isRequired,
+  handleRemoveTodos: PropTypes.func.isRequired
 };
 
 export { Todos };
