@@ -17,7 +17,7 @@ class Todos extends React.Component {
       TodosTemplate = data.map(function(item) {
         return (
           <TodoItem
-            key={item.id}
+            key={item._id}
             data={item}
             tab={activeTab}
             onSave={handleEditTodos}

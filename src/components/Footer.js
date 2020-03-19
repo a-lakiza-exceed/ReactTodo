@@ -5,6 +5,7 @@ class Footer extends React.Component {
   render() {
     const { active, completed, handleClickFilterButton } = this.props;
     const itemWord = active === 1 ? "item" : "items";
+    
     return (
       <div className="footer">
         <span className="activeItemsCount">

@@ -20,7 +20,7 @@ class TodoItem extends React.Component {
   };
 
   handleCheckBoxChange = () => {
-    this.props.onChange(this.props.data.id);
+    this.props.onChange(this.props.data._id);
   };
 
   onBlurHandler = () => {
@@ -28,7 +28,7 @@ class TodoItem extends React.Component {
     const text = this.state.text;
     if (validate(text)) {
       this.setState({ isEditing: false });
-      this.props.onSave(this.props.data.id, this.state.text);
+      this.props.onSave(this.props.data._id, this.state.text);
     }
   };
 
@@ -79,7 +79,7 @@ class TodoItem extends React.Component {
           </span>
           <button
             className="removeButton"
-            onClick={() => removeTodo(todo.id, todo.text)}
+            onClick={() => removeTodo(todo._id, todo.text)}
           ></button>
         </div>
       );
@@ -90,7 +90,7 @@ class TodoItem extends React.Component {
 
 TodoItem.propTypes = {
   data: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     isCompleted: PropTypes.bool.isRequired
   }),

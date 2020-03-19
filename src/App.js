@@ -14,40 +14,21 @@ class App extends React.Component {
     activeTab: null
   };
 
-  loadData = () => {
+  componentDidMount() {
     axios
       .get(`http://localhost:2000/todos/`)
       .then(res => {
-        const todos = [...res.data].map(todo => {
-          const newTodo = {
-            id: todo._id,
-            text: todo.text,
-            isCompleted: todo.isCompleted
-          };
-          return newTodo;
-        });
+        const todos = [...res.data].reverse();
         this.setState({ todos });
       })
       .then(() => {
-        const isAllCompleted = [...this.state.todos].every(
-          todo => todo.isCompleted === true
-        );
-        if (isAllCompleted) {
-          this.setState({
-            isAllChecked: true
-          });
-        } else {
-          if (this.state.isAllChecked === true) {
-            this.setState({
-              isAllChecked: false
-            });
-          }
-        }
+        const isAllCompleted =
+          [...this.state.todos].every(todo => todo.isCompleted === true) &&
+          this.state.todos.length !== 0;
+        this.setState({
+          isAllChecked: isAllCompleted
+        });
       });
-  };
-
-  componentDidMount() {
-    this.loadData();
   }
 
   addNotify = text => toast.success(text);
@@ -55,52 +36,73 @@ class App extends React.Component {
   removeNotify = text => toast.error(text);
 
   handleAddTodos = data => {
-    this.addNotify("Added todo: " + data.text);
     axios
       .post(`http://localhost:2000/todos/create/`, {
         text: data.text,
         isCompleted: data.isCompleted
       })
       .then(res => {
-        this.loadData();
+        const nextTodo = [res.data, ...this.state.todos];
+        this.setState({ todos: nextTodo });
+        this.addNotify(`Added todo: ${data.text}`);
       });
   };
 
   handleEditTodos = (id, text) => {
-    axios
-      .put(`http://localhost:2000/todos/${id}/update`, {
-        text: text
-      })
-      .then(res => {
-        this.loadData();
-      });
+    const todos = [...this.state.todos].map(todo => {
+      if (todo._id === id) {
+        todo.text = text;
+      }
+      return todo;
+    });
+    this.setState({
+      todos
+    });
+    axios.put(`http://localhost:2000/todos/${id}/update`, {
+      text: text
+    });
   };
 
   handleCheckboxChange = id => {
-    const todo = [...this.state.todos].find(todo => todo.id === id);
-    axios
-      .put(`http://localhost:2000/todos/${id}/update`, {
-        isCompleted: !todo.isCompleted
-      })
-      .then(res => {
-        this.loadData();
+    const todos = [...this.state.todos].map(todo => {
+      if (todo._id === id) {
+        todo.isCompleted = !todo.isCompleted;
+        axios.put(`http://localhost:2000/todos/${id}/update`, {
+          isCompleted: todo.isCompleted
+        });
+      }
+      return todo;
+    });
+    const isAllCompleted = todos.every(todo => todo.isCompleted === true);
+    if (isAllCompleted) {
+      this.setState({
+        isAllChecked: true
       });
+    } else {
+      if (this.state.isAllChecked === true) {
+        this.setState({
+          isAllChecked: false
+        });
+      }
+    }
+    this.setState({
+      todos: todos
+    });
   };
 
   handleHeaderCheckboxChange = () => {
     const isAllChecked = !this.state.isAllChecked;
-    const todos = [...this.state.todos].filter(
-      todo => todo.isCompleted !== isAllChecked
-    );
-    let promises = [];
-    todos.forEach(todo => {
-      promises.push(
-        axios.put(`http://localhost:2000/todos/${todo.id}/update`, {
-          isCompleted: !todo.isCompleted
-        })
-      );
+    const todos = [...this.state.todos].map(todo => {
+      todo.isCompleted = isAllChecked;
+      return todo;
     });
-    Promise.all(promises).then(() => this.loadData());
+    this.setState({
+      todos: todos,
+      isAllChecked: isAllChecked
+    });
+    axios.put(`http://localhost:2000/todos/updateMany`, {
+      isCompleted: isAllChecked
+    });
   };
 
   validate = text => {
@@ -111,24 +113,33 @@ class App extends React.Component {
   };
 
   removeTodo = (id, text) => {
-    axios.delete(`http://localhost:2000/todos/${id}/delete`).then(res => {
-      this.loadData();
+    const todos = [...this.state.todos].filter(todo => todo._id !== id);
+    if (todos.length === 0) {
+      this.setState({
+        isAllChecked: false
+      });
+    }
+    this.setState({
+      todos: todos
     });
-    this.removeNotify("Removed: " + text);
+    axios.delete(`http://localhost:2000/todos/${id}/delete`).then(res => {
+      this.removeNotify(`Removed: ${text}`);
+    });
   };
 
   handleClickClear = () => {
-    const completed = [...this.state.todos].filter(
-      todo => todo.isCompleted === true
-    );
-
-    let promises = [];
-    completed.forEach(todo => {
-      promises.push(
-        axios.delete(`http://localhost:2000/todos/${todo.id}/delete`)
-      );
+    [...this.state.todos].forEach(todo => {
+      if (todo.isCompleted) {
+        axios.delete(`http://localhost:2000/todos/${todo._id}/delete`);
+      }
     });
-    Promise.all(promises).then(() => this.loadData());
+    const todos = [...this.state.todos].filter(
+      todo => todo.isCompleted === false
+    );
+    this.setState({
+      todos: todos,
+      isAllChecked: false
+    });
   };
 
   handleClickFilterButton = tab => {
@@ -141,6 +152,7 @@ class App extends React.Component {
     const { todos, activeTab, isAllChecked } = this.state;
     const active = todos.filter(todo => todo.isCompleted === false);
     const completed = todos.length - active.length;
+
     return (
       <React.Fragment>
         <h1>todos</h1>
