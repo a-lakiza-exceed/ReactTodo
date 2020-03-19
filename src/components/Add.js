@@ -5,6 +5,7 @@ class Add extends React.Component {
   state = {
     text: ""
   };
+
   onKeyDownHandler = e => {
     if (e.key === "Enter") {
       const { validate } = this.props;
@@ -17,10 +18,12 @@ class Add extends React.Component {
       }
     }
   };
+
   handleChange = e => {
     const { value } = e.currentTarget;
     this.setState({ text: value });
   };
+
   submitHandler = e => {
     e.preventDefault();
     this.setState({
@@ -51,6 +54,7 @@ class Add extends React.Component {
     );
   }
 }
+
 Add.propTypes = {
   onAddTodos: PropTypes.func.isRequired
 };

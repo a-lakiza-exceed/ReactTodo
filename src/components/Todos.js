@@ -10,7 +10,6 @@ class Todos extends React.Component {
     const { handleCheckboxChange } = this.props;
     const { validate } = this.props;
     let TodosTemplate = null;
-
     if (data.length) {
       TodosTemplate = data.map(function(item) {
         return (
@@ -26,7 +25,6 @@ class Todos extends React.Component {
         );
       });
     }
-
     return TodosTemplate;
   };
 

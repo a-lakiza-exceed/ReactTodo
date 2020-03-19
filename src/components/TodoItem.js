@@ -17,20 +17,20 @@ class TodoItem extends React.Component {
       text: text
     });
   };
+
   handleCheckBoxChange = () => {
     this.props.onChange(this.props.data.id);
   };
+
   onBlurHandler = () => {
-    console.log('work');
-    
     const { validate } = this.props;
     const text = this.state.text;
-
     if (validate(text)) {
       this.setState({ isEditing: false });
       this.props.onSave(this.props.data.id, this.state.text);
     }
   };
+
   onKeyDownHandler = e => {
     if (e.key === "Enter") {
       this.onBlurHandler();
