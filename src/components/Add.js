@@ -62,4 +62,4 @@ Add.propTypes = {
   onCheckboxChange: PropTypes.func.isRequired
 };
 
-export { Add };
+export default Add;

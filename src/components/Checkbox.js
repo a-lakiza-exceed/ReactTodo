@@ -34,4 +34,4 @@ Checkbox.propTypes = {
   handleCheckBoxChange: PropTypes.func.isRequired
 };
 
-export { Checkbox };
+export default Checkbox;

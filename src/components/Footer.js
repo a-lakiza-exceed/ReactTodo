@@ -60,4 +60,4 @@ Footer.propTypes = {
   handleClickFilterButton: PropTypes.func.isRequired
 };
 
-export { Footer };
+export default Footer;

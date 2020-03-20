@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Checkbox } from "./Checkbox";
+import Checkbox from "./Checkbox";
+const classNames = require('classnames')
 
 class TodoItem extends React.Component {
   state = {
@@ -20,7 +21,7 @@ class TodoItem extends React.Component {
   };
 
   handleCheckBoxChange = () => {
-    this.props.onChange(this.props.data._id);
+    this.props.onChange(this.props.data);
   };
 
   onBlurHandler = () => {
@@ -41,16 +42,14 @@ class TodoItem extends React.Component {
   render() {
     const todo = this.props.data;
     const { removeTodo, tab } = this.props;
-    const textClasses = ["itemText"];
-    const itemClasses = ["todoItem"];
-    if (tab !== null) {
-      if (todo.isCompleted !== tab) {
-        itemClasses.push("hidden");
-      }
-    }
-    if (todo.isCompleted) {
-      textClasses.push("completed");
-    }
+    const textClasses = classNames({
+      'itemText': true,
+      'completed': todo.isCompleted
+    });
+    const itemClasses = classNames({
+      'todoItem': true,
+      'hidden': tab !== null &&  todo.isCompleted !== tab
+    });
     let item;
     if (this.state.isEditing) {
       item = (
@@ -66,13 +65,13 @@ class TodoItem extends React.Component {
       );
     } else {
       item = (
-        <div className={itemClasses.join(" ")}>
+        <div className={itemClasses}>
           <Checkbox
             handleCheckBoxChange={this.handleCheckBoxChange}
             todo={todo}
           />
           <span
-            className={textClasses.join(" ")}
+            className={textClasses}
             onDoubleClick={this.handleDoubleClick}
           >
             {todo.text}
@@ -101,4 +100,4 @@ TodoItem.propTypes = {
   removeTodo: PropTypes.func.isRequired
 };
 
-export { TodoItem };
+export default TodoItem;

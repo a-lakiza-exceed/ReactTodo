@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { TodoItem } from "./TodoItem";
+import TodoItem from "./TodoItem";
 
 class Todos extends React.Component {
   renderTodos = () => {
@@ -45,4 +45,4 @@ Todos.propTypes = {
   handleRemoveTodos: PropTypes.func.isRequired
 };
 
-export { Todos };
+export default Todos;
