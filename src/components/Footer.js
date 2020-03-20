@@ -5,7 +5,7 @@ class Footer extends React.Component {
   render() {
     const { active, completed, handleClickFilterButton } = this.props;
     const itemWord = active === 1 ? "item" : "items";
-    
+
     return (
       <div className="footer">
         <span className="activeItemsCount">
@@ -15,7 +15,7 @@ class Footer extends React.Component {
           <button
             onClick={() => handleClickFilterButton(null)}
             className={
-              null === this.props.activeTab ? "filterButtons__focused" : ""
+              this.props.activeTab === null ? "filterButtons__focused" : ""
             }
           >
             All
@@ -23,7 +23,7 @@ class Footer extends React.Component {
           <button
             onClick={() => handleClickFilterButton(false)}
             className={
-              false === this.props.activeTab ? "filterButtons__focused" : ""
+              this.props.activeTab === false ? "filterButtons__focused" : ""
             }
           >
             Active
@@ -31,7 +31,7 @@ class Footer extends React.Component {
           <button
             onClick={() => handleClickFilterButton(true)}
             className={
-              true === this.props.activeTab ? "filterButtons__focused" : ""
+              this.props.activeTab === true ? "filterButtons__focused" : ""
             }
           >
             Completed
@@ -55,7 +55,7 @@ class Footer extends React.Component {
 Footer.propTypes = {
   active: PropTypes.number.isRequired,
   completed: PropTypes.number.isRequired,
-  activeTab: PropTypes.oneOf([null, Boolean]),
+  activeTab: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf([null])]),
   handleClickClear: PropTypes.func.isRequired,
   handleClickFilterButton: PropTypes.func.isRequired
 };

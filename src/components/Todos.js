@@ -38,7 +38,7 @@ class Todos extends React.Component {
 
 Todos.propTypes = {
   data: PropTypes.array.isRequired,
-  activeTab: PropTypes.oneOf([null, Boolean]),
+  activeTab: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf([null])]),
   handleEditTodos: PropTypes.func.isRequired,
   handleCheckboxChange: PropTypes.func.isRequired,
   validate: PropTypes.func.isRequired,

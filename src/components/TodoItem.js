@@ -52,7 +52,7 @@ class TodoItem extends React.Component {
       textClasses.push("completed");
     }
     let item;
-    if (this.state.isEditing === true) {
+    if (this.state.isEditing) {
       item = (
         <div>
           <input
@@ -94,7 +94,7 @@ TodoItem.propTypes = {
     text: PropTypes.string.isRequired,
     isCompleted: PropTypes.bool.isRequired
   }),
-  tab: PropTypes.oneOf([null, Boolean]),
+  tab: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf([null])]),
   onSave: PropTypes.func.isRequired,
   validate: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,

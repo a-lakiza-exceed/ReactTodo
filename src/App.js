@@ -23,8 +23,9 @@ class App extends React.Component {
       })
       .then(() => {
         const isAllCompleted =
-          [...this.state.todos].every(todo => todo.isCompleted === true) &&
+          [...this.state.todos].every(todo => todo.isCompleted) &&
           this.state.todos.length !== 0;
+
         this.setState({
           isAllChecked: isAllCompleted
         });
@@ -73,13 +74,13 @@ class App extends React.Component {
       }
       return todo;
     });
-    const isAllCompleted = todos.every(todo => todo.isCompleted === true);
+    const isAllCompleted = todos.every(todo => todo.isCompleted);
     if (isAllCompleted) {
       this.setState({
         isAllChecked: true
       });
     } else {
-      if (this.state.isAllChecked === true) {
+      if (this.state.isAllChecked) {
         this.setState({
           isAllChecked: false
         });
@@ -128,14 +129,14 @@ class App extends React.Component {
   };
 
   handleClickClear = () => {
+    let ids = [];
     [...this.state.todos].forEach(todo => {
       if (todo.isCompleted) {
-        axios.delete(`http://localhost:2000/todos/${todo._id}/delete`);
+        ids.push(todo._id);
       }
     });
-    const todos = [...this.state.todos].filter(
-      todo => todo.isCompleted === false
-    );
+    axios.delete(`http://localhost:2000/todos/deleteMany/${ids}`);
+    const todos = [...this.state.todos].filter(todo => !todo.isCompleted);
     this.setState({
       todos: todos,
       isAllChecked: false
@@ -150,7 +151,7 @@ class App extends React.Component {
 
   render() {
     const { todos, activeTab, isAllChecked } = this.state;
-    const active = todos.filter(todo => todo.isCompleted === false);
+    const active = todos.filter(todo => !todo.isCompleted);
     const completed = todos.length - active.length;
 
     return (
