@@ -10,10 +10,6 @@ import {
   COMPLETE_ALL_TODOS
 } from "../types/actionTypes";
 
-  const addNotify = text => toast.success(text);
-
-  const removeNotify = text => toast.error(text);
-
 export function addTodo(text) {
   return function(dispatch) {
     axios
@@ -26,32 +22,39 @@ export function addTodo(text) {
           type: ADD_TODO,
           payload: res.data
         });
-        addNotify(`Added todo: ${text}`);
-      });
+        toast.success(`Added todo: ${text}`);
+      })
+      .catch(err => toast.error(`${err}`));
   };
 }
 
 export function loadData() {
   return function(dispatch) {
-    axios.get(`http://localhost:2000/todos/`).then(res => {
-      const todos = [...res.data].reverse();
-      dispatch({
-        type: LOAD_DATA,
-        payload: todos
-      });
-    });
+    axios
+      .get(`http://localhost:2000/todos/`)
+      .then(res => {
+        const todos = [...res.data].reverse();
+        dispatch({
+          type: LOAD_DATA,
+          payload: todos
+        });
+      })
+      .catch(err => toast.error(`${err}`));
   };
 }
 
 export function removeTodo(id, text) {
   return function(dispatch) {
-    axios.delete(`http://localhost:2000/todos/${id}/delete`).then(() => {
-      dispatch({
-        type: REMOVE_TODO,
-        payload: id
-      });
-      removeNotify(`Removed: ${text}`);
-    });
+    axios
+      .delete(`http://localhost:2000/todos/${id}/delete`)
+      .then(() => {
+        dispatch({
+          type: REMOVE_TODO,
+          payload: id
+        });
+        toast.info(`Removed: ${text}`);
+      })
+      .catch(err => toast.error(`${err}`));
   };
 }
 
@@ -69,7 +72,8 @@ export function editTodo(id, text) {
             text
           }
         });
-      });
+      })
+      .catch(err => toast.error(`${err}`));
   };
 }
 
@@ -84,31 +88,35 @@ export function completeTodo({ _id, isCompleted }) {
           type: COMPLETE_TODO,
           payload: _id
         });
-      });
+      })
+      .catch(err => toast.error(`${err}`));
   };
 }
 
-export function completeAllTodos( areAllChecked ) {
+export function completeAllTodos(areAllChecked) {
   return function(dispatch) {
     axios
-        .put(`http://localhost:2000/todos/updateMany`, {
-          isCompleted: areAllChecked
-        })
+      .put(`http://localhost:2000/todos/updateMany`, {
+        isCompleted: areAllChecked
+      })
       .then(() => {
         dispatch({
-          type: COMPLETE_ALL_TODOS,
+          type: COMPLETE_ALL_TODOS
         });
-      });
+      })
+      .catch(err => toast.error(`${err}`));
   };
 }
 
 export function clearCompleted() {
   return function(dispatch) {
-    axios.delete(`http://localhost:2000/todos/deleteCompleted/`)
+    axios
+      .delete(`http://localhost:2000/todos/deleteCompleted/`)
       .then(() => {
         dispatch({
-          type: CLEAR_COMPLETED,
+          type: CLEAR_COMPLETED
         });
-      });
+      })
+      .catch(err => toast.error(`${err}`));
   };
 }

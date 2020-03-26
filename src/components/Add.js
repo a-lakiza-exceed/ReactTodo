@@ -13,8 +13,6 @@ class Add extends React.Component {
     this.props.completeAllTodos(event.currentTarget.checked);
   };
 
-  WarningNotify = () => toast.warning("Invalid value");
-
   handleChange = e => {
     const { value } = e.currentTarget;
     this.setState({ text: value });
@@ -26,7 +24,7 @@ class Add extends React.Component {
     if (text.trim()) {
       this.props.addTodo(text);
     } else {
-      this.WarningNotify();
+      toast.warning("Invalid value");
     }
     this.setState({
       text: ""
@@ -73,4 +71,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Add);
-

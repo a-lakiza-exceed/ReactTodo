@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import { loadData } from "../actions/todoActions";
 
 class App extends React.Component {
+  
   componentDidMount() {
     this.props.loadData();
   }

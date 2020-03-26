@@ -3,14 +3,15 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { clearCompleted } from "../actions/todoActions";
 import { setFilter } from "../actions/filterActions";
+import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from "../types/filterTypes";
+
 class Footer extends React.Component {
-  
   handleClickClear = () => {
     this.props.clearCompleted();
   };
 
-  handleClickFilterButton = tab => {
-    this.props.setFilter(tab);
+  handleClickFilterButton = event => {
+    this.props.setFilter(event.currentTarget.id);
   };
 
   render() {
@@ -26,25 +27,32 @@ class Footer extends React.Component {
         </span>
         <div className="filterButtons">
           <button
-            onClick={() => this.handleClickFilterButton(null)}
+            id={SHOW_ALL}
+            onClick={this.handleClickFilterButton}
             className={
-              this.props.activeTab === null ? "filterButtons__focused" : ""
+              this.props.activeTab === SHOW_ALL ? "filterButtons__focused" : ""
             }
           >
             All
           </button>
           <button
-            onClick={() => this.handleClickFilterButton(false)}
+            id={SHOW_ACTIVE}
+            onClick={this.handleClickFilterButton}
             className={
-              this.props.activeTab === false ? "filterButtons__focused" : ""
+              this.props.activeTab === SHOW_ACTIVE
+                ? "filterButtons__focused"
+                : ""
             }
           >
             Active
           </button>
           <button
-            onClick={() => this.handleClickFilterButton(true)}
+            id={SHOW_COMPLETED}
+            onClick={this.handleClickFilterButton}
             className={
-              this.props.activeTab === true ? "filterButtons__focused" : ""
+              this.props.activeTab === SHOW_COMPLETED
+                ? "filterButtons__focused"
+                : ""
             }
           >
             Completed
@@ -64,7 +72,7 @@ class Footer extends React.Component {
 
 Footer.propTypes = {
   todos: PropTypes.array.isRequired,
-  activeTab: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf([null])]),
+  activeTab: PropTypes.string,
   clearCompleted: PropTypes.func.isRequired,
   setFilter: PropTypes.func.isRequired
 };

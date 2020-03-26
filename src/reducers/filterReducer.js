@@ -1,7 +1,8 @@
 import { SET_VISIBILITY_FILTER } from "../types/actionTypes";
+import { SHOW_ALL } from "../types/filterTypes";
 
 const initialState = {
-  activeTab: null
+  activeTab: SHOW_ALL
 };
 
 export const filterReducer = (state = initialState, action) => {

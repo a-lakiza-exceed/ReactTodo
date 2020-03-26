@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import { removeTodo, editTodo, completeTodo } from "../actions/todoActions";
 import Checkbox from "./Checkbox";
+import { SHOW_ALL, SHOW_ACTIVE } from "../types/filterTypes";
 const classNames = require("classnames");
 
 class TodoItem extends React.Component {
@@ -12,8 +13,6 @@ class TodoItem extends React.Component {
     text: this.props.todo.text,
     oldValue: ""
   };
-
-  WarningNotify = () => toast.warning("Invalid value");
 
   handleDoubleClick = () => {
     this.setState({ oldValue: this.state.text, isEditing: true });
@@ -42,7 +41,7 @@ class TodoItem extends React.Component {
         this.props.editTodo(this.props.todo._id, text);
       }
     } else {
-      this.WarningNotify();
+      toast.warning("Invalid value");
       this.setState({
         text: oldValue
       })
@@ -61,8 +60,9 @@ class TodoItem extends React.Component {
       itemText: true,
       completed: todo.isCompleted
     });
+    const isActiveTab = tab === SHOW_ACTIVE ? true : false;
     const itemClasses = classNames("todoItem", {
-      hidden: tab !== null && todo.isCompleted !== tab
+      hidden: tab !== SHOW_ALL && todo.isCompleted === isActiveTab
     });
     let item;
     if (this.state.isEditing) {
@@ -104,7 +104,7 @@ TodoItem.propTypes = {
     text: PropTypes.string.isRequired,
     isCompleted: PropTypes.bool.isRequired
   }),
-  tab: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf([null])])
+  tab: PropTypes.string
 };
 
 const mapStateToProps = state => {
