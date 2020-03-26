@@ -1,22 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { addTodo, completeAllTodos } from "../actions/todoActions";
 
 class Add extends React.Component {
   state = {
     text: ""
   };
 
-  onKeyDownHandler = e => {
-    if (e.key === "Enter") {
-      const { validate } = this.props;
-      const text = this.state.text;
-      if (validate(text)) {
-        this.props.onAddTodos({
-          isCompleted: false,
-          text
-        });
-      }
-    }
+  handleCheckboxChange = event => {
+    this.props.completeAllTodos(event.currentTarget.checked);
   };
 
   handleChange = e => {
@@ -26,6 +19,8 @@ class Add extends React.Component {
 
   submitHandler = e => {
     e.preventDefault();
+    const { text } = this.state;
+    this.props.addTodo(text);
     this.setState({
       text: ""
     });
@@ -37,8 +32,8 @@ class Add extends React.Component {
         <input
           type="checkbox"
           className="toggleAll"
-          checked={this.props.isAllChecked}
-          onChange={this.props.onCheckboxChange}
+          checked={this.props.areAllCompleted}
+          onChange={this.handleCheckboxChange}
         />
         <input
           id="newItem"
@@ -46,7 +41,6 @@ class Add extends React.Component {
           type="text"
           autoFocus={true}
           onChange={this.handleChange}
-          onKeyDown={this.onKeyDownHandler}
           placeholder="What needs to be done?"
           value={this.state.text}
         />
@@ -56,10 +50,19 @@ class Add extends React.Component {
 }
 
 Add.propTypes = {
-  onAddTodos: PropTypes.func.isRequired,
-  isAllChecked: PropTypes.bool.isRequired,
-  validate: PropTypes.func.isRequired,
-  onCheckboxChange: PropTypes.func.isRequired
+  addTodo: PropTypes.func.isRequired,
+  areAllCompleted: PropTypes.bool.isRequired,
+  completeAllTodos: PropTypes.func.isRequired
 };
 
-export default Add;
+const mapStateToProps = state => {
+  return {
+    areAllCompleted: state.todos.areAllCompleted
+  };
+};
+const mapDispatchToProps = {
+  addTodo,
+  completeAllTodos
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Add);

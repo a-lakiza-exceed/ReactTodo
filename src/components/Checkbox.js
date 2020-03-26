@@ -2,8 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 
 class Checkbox extends React.Component {
+  
   render() {
     const { todo, handleCheckBoxChange } = this.props;
+
     return (
       <React.Fragment>
         <input
@@ -26,8 +28,8 @@ class Checkbox extends React.Component {
 }
 
 Checkbox.propTypes = {
-  data: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+  todo: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     isCompleted: PropTypes.bool.isRequired
   }),

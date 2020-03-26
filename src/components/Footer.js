@@ -1,9 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
-
+import { connect } from "react-redux";
+import { clearCompleted } from "../actions/todoActions";
+import { setFilter } from "../actions/filterActions";
 class Footer extends React.Component {
+  
+  handleClickClear = () => {
+    this.props.clearCompleted();
+  };
+
+  handleClickFilterButton = tab => {
+    this.props.setFilter(tab);
+  };
+
   render() {
-    const { active, completed, handleClickFilterButton } = this.props;
+    const { todos } = this.props;
+    const active = [...todos].filter(todo => !todo.isCompleted).length;
+    const completed = todos.length - active;
     const itemWord = active === 1 ? "item" : "items";
 
     return (
@@ -13,7 +26,7 @@ class Footer extends React.Component {
         </span>
         <div className="filterButtons">
           <button
-            onClick={() => handleClickFilterButton(null)}
+            onClick={() => this.handleClickFilterButton(null)}
             className={
               this.props.activeTab === null ? "filterButtons__focused" : ""
             }
@@ -21,7 +34,7 @@ class Footer extends React.Component {
             All
           </button>
           <button
-            onClick={() => handleClickFilterButton(false)}
+            onClick={() => this.handleClickFilterButton(false)}
             className={
               this.props.activeTab === false ? "filterButtons__focused" : ""
             }
@@ -29,7 +42,7 @@ class Footer extends React.Component {
             Active
           </button>
           <button
-            onClick={() => handleClickFilterButton(true)}
+            onClick={() => this.handleClickFilterButton(true)}
             className={
               this.props.activeTab === true ? "filterButtons__focused" : ""
             }
@@ -39,10 +52,7 @@ class Footer extends React.Component {
         </div>
         <div className="clearButtonArea">
           {completed ? (
-            <button
-              className="clearButton"
-              onClick={this.props.handleClickClear}
-            >
+            <button className="clearButton" onClick={this.handleClickClear}>
               Clear completed
             </button>
           ) : null}
@@ -53,11 +63,21 @@ class Footer extends React.Component {
 }
 
 Footer.propTypes = {
-  active: PropTypes.number.isRequired,
-  completed: PropTypes.number.isRequired,
+  todos: PropTypes.array.isRequired,
   activeTab: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf([null])]),
-  handleClickClear: PropTypes.func.isRequired,
-  handleClickFilterButton: PropTypes.func.isRequired
+  clearCompleted: PropTypes.func.isRequired,
+  setFilter: PropTypes.func.isRequired
 };
 
-export default Footer;
+const mapStateToProps = state => {
+  return {
+    todos: state.todos.todos,
+    activeTab: state.filter.activeTab
+  };
+};
+const mapDispatchToProps = {
+  clearCompleted,
+  setFilter
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Footer);

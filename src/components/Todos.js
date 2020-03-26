@@ -1,48 +1,30 @@
 import React from "react";
 import PropTypes from "prop-types";
 import TodoItem from "./TodoItem";
+import { connect } from "react-redux";
 
-class Todos extends React.Component {
-  renderTodos = () => {
-    const {
-      data,
-      activeTab,
-      handleEditTodos,
-      validate,
-      handleRemoveTodos,
-      handleCheckboxChange
-    } = this.props;
+const Todos = ({ todos }) => {
+  const renderTodos = () => {
     let TodosTemplate = null;
-    if (data.length) {
-      TodosTemplate = data.map(function(item) {
-        return (
-          <TodoItem
-            key={item._id}
-            data={item}
-            tab={activeTab}
-            onSave={handleEditTodos}
-            validate={validate}
-            onChange={handleCheckboxChange}
-            removeTodo={handleRemoveTodos}
-          />
-        );
+    if (todos.length) {
+      TodosTemplate = todos.map(function(item) {
+        return <TodoItem key={item._id} todo={item} />;
       });
     }
     return TodosTemplate;
   };
 
-  render() {
-    return <div className="todos">{this.renderTodos()}</div>;
-  }
-}
-
-Todos.propTypes = {
-  data: PropTypes.array.isRequired,
-  activeTab: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf([null])]),
-  handleEditTodos: PropTypes.func.isRequired,
-  handleCheckboxChange: PropTypes.func.isRequired,
-  validate: PropTypes.func.isRequired,
-  handleRemoveTodos: PropTypes.func.isRequired
+  return <div className="todos">{renderTodos()}</div>;
 };
 
-export default Todos;
+Todos.propTypes = {
+  todos: PropTypes.array.isRequired,
+};
+
+const mapStateToProps = state => {
+  return {
+    todos: state.todos.todos
+  };
+};
+
+export default connect(mapStateToProps)(Todos);
