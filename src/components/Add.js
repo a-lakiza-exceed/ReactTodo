@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { toast } from "react-toastify";
 import { addTodo, completeAllTodos } from "../actions/todoActions";
 
 class Add extends React.Component {
@@ -12,6 +13,8 @@ class Add extends React.Component {
     this.props.completeAllTodos(event.currentTarget.checked);
   };
 
+  WarningNotify = () => toast.warning("Invalid value");
+
   handleChange = e => {
     const { value } = e.currentTarget;
     this.setState({ text: value });
@@ -22,10 +25,12 @@ class Add extends React.Component {
     const { text } = this.state;
     if (text.trim()) {
       this.props.addTodo(text);
-      this.setState({
-        text: ""
-      });
+    } else {
+      this.WarningNotify();
     }
+    this.setState({
+      text: ""
+    });
   };
 
   render() {
@@ -68,3 +73,4 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Add);
+

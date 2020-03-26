@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { toast } from "react-toastify";
 import { removeTodo, editTodo, completeTodo } from "../actions/todoActions";
 import Checkbox from "./Checkbox";
 const classNames = require("classnames");
@@ -8,11 +9,14 @@ const classNames = require("classnames");
 class TodoItem extends React.Component {
   state = {
     isEditing: false,
-    text: this.props.todo.text
+    text: this.props.todo.text,
+    oldValue: ""
   };
 
+  WarningNotify = () => toast.warning("Invalid value");
+
   handleDoubleClick = () => {
-    this.setState({ isEditing: true });
+    this.setState({ oldValue: this.state.text, isEditing: true });
   };
 
   handleChange = e => {
@@ -31,10 +35,17 @@ class TodoItem extends React.Component {
   };
 
   onBlurHandler = () => {
-    const text = this.state.text;
+    const { oldValue, text } = this.state;
+    this.setState({ isEditing: false });
     if (text.trim()) {
-      this.setState({ isEditing: false });
-      this.props.editTodo(this.props.todo._id, this.state.text);
+      if (oldValue !== text.trim()) {
+        this.props.editTodo(this.props.todo._id, text);
+      }
+    } else {
+      this.WarningNotify();
+      this.setState({
+        text: oldValue
+      })
     }
   };
 
@@ -93,7 +104,7 @@ TodoItem.propTypes = {
     text: PropTypes.string.isRequired,
     isCompleted: PropTypes.bool.isRequired
   }),
-  tab: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf([null])]),
+  tab: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf([null])])
 };
 
 const mapStateToProps = state => {
