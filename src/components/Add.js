@@ -20,10 +20,12 @@ class Add extends React.Component {
   submitHandler = e => {
     e.preventDefault();
     const { text } = this.state;
-    this.props.addTodo(text);
-    this.setState({
-      text: ""
-    });
+    if (text.trim()) {
+      this.props.addTodo(text);
+      this.setState({
+        text: ""
+      });
+    }
   };
 
   render() {
