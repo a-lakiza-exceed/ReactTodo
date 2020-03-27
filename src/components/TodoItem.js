@@ -67,7 +67,7 @@ class TodoItem extends React.Component {
     let item;
     if (this.state.isEditing) {
       item = (
-        <div>
+        <div className='todoItemEditing'>
           <input
             className="input"
             onChange={this.handleChange}

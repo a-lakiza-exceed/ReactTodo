@@ -25,12 +25,17 @@ export const todosReducer = (state = initialState, action) => {
       };
 
     case ADD_TODO:
-      return { ...state, todos: [action.payload, ...state.todos] };
+      return {
+        ...state,
+        todos: [action.payload, ...state.todos],
+        areAllCompleted: false
+      };
 
     case REMOVE_TODO:
       return {
         ...state,
-        todos: state.todos.filter(todo => todo._id !== action.payload)
+        todos: state.todos.filter(todo => todo._id !== action.payload),
+        areAllCompleted: state.todos.length > 1
       };
 
     case EDIT_TODO:
@@ -74,7 +79,8 @@ export const todosReducer = (state = initialState, action) => {
     case CLEAR_COMPLETED:
       return {
         ...state,
-        todos: [...state.todos].filter(todo => !todo.isCompleted)
+        todos: [...state.todos].filter(todo => !todo.isCompleted),
+        areAllCompleted: false
       };
 
     default:
