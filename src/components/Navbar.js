@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { logoutUser } from "../actions/authActions";
+import { logoutUser } from "../redux/actions/authActions";
 
 class Navbar extends Component {
   onLogoutClick = e => {
@@ -9,9 +9,8 @@ class Navbar extends Component {
     this.props.logoutUser();
     this.props.history.push("/login");
   };
+
   render() {
-    console.log();
-    
     return (
       <div className="navbar-fixed">
         {this.props.auth.isAuthenticated ? <button
@@ -31,9 +30,11 @@ class Navbar extends Component {
     );
   }
 }
+
 const mapStateToProps = state => ({
   auth: state.auth
 });
+
 export default connect(
   mapStateToProps,
   { logoutUser }

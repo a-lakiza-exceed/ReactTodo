@@ -6,12 +6,13 @@ import "react-toastify/dist/ReactToastify.css";
 import Add from "../components/Add";
 import Todos from "../components/Todos";
 import Footer from "../components/Footer";
-import { loadData } from "../actions/todoActions";
+import { loadData } from "../redux/actions/todoActions";
 
 class MainSection extends React.Component {
     componentDidMount() {
         this.props.loadData(this.props.auth.user.id);
     }
+    
     render() {
         const { todos } = this.props;
         return (

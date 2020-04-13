@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { registerUser } from "../actions/authActions";
+import { registerUser } from "../redux/actions/authActions";
 import classnames from "classnames";
 import { validateRegisterInput } from '../utils/validate'
 
@@ -17,14 +17,17 @@ class Register extends Component {
       errors: {}
     };
   }
+
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/");
     }
   }
+
   onChange = e => {
     this.setState({ [e.target.id]: e.target.value });
   };
+
   onSubmit = async e => {
     e.preventDefault();
     const newUser = {
@@ -37,13 +40,9 @@ class Register extends Component {
     this.setState({ errors: errs.errors });
     if ((Object.keys(errs.errors).length === 0)) {
       this.props.registerUser(newUser, this.props.history);
-      console.log(this.props.errors);
-
-    }
-    else {
-      console.log(errs);
     }
   };
+
   render() {
     const { errors } = this.state;
     return (
@@ -140,13 +139,16 @@ class Register extends Component {
     );
   }
 }
+
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };
+
 const mapStateToProps = state => ({
   auth: state.auth,
 });
+
 export default connect(
   mapStateToProps,
   { registerUser }

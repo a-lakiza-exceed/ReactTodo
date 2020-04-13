@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { clearCompleted } from "../actions/todoActions";
-import { setFilter } from "../actions/filterActions";
-import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from "../types/filterTypes";
+import { clearCompleted } from "../redux/actions/todoActions";
+import { setFilter } from "../redux/actions/filterActions";
+import { SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED } from "../redux/types/filterTypes";
 
 class Footer extends React.Component {
   handleClickClear = () => {

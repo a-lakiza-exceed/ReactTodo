@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 class Checkbox extends React.Component {
-  
+
   render() {
     const { todo, handleCheckBoxChange } = this.props;
 

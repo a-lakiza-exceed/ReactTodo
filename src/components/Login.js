@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { loginUser } from "../actions/authActions";
+import { loginUser } from "../redux/actions/authActions";
 import { validateLoginInput } from '../utils/validate'
 import classnames from "classnames";
+
 class Login extends Component {
   constructor() {
     super();
@@ -14,19 +15,23 @@ class Login extends Component {
       errors: {}
     };
   }
+
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/");
     }
   }
+
   componentDidUpdate() {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/");
     }
   }
+
   onChange = e => {
     this.setState({ [e.target.id]: e.target.value });
   };
+
   onSubmit = e => {
     e.preventDefault();
     const userData = {
@@ -42,8 +47,8 @@ class Login extends Component {
       console.log(errs);
 
     }
-
   };
+
   render() {
     const { errors } = this.state;
     return (
@@ -114,13 +119,16 @@ class Login extends Component {
     );
   }
 }
+
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };
+
 const mapStateToProps = state => ({
   auth: state.auth,
 });
+
 export default connect(
   mapStateToProps,
   { loginUser }

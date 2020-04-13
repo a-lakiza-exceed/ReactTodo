@@ -13,7 +13,7 @@ import {
 export function addTodo(text, userId) {
   return function (dispatch) {
     axios
-      .post(`http://localhost:2000/todos/create/`, {
+      .post(`http://localhost:2000/todos/`, {
         text,
         isCompleted: false,
         userId
@@ -47,7 +47,7 @@ export function loadData(id) {
 export function removeTodo(id, text) {
   return function (dispatch) {
     axios
-      .delete(`http://localhost:2000/todos/${id}/delete`)
+      .delete(`http://localhost:2000/todos/${id}/`)
       .then(() => {
         dispatch({
           type: REMOVE_TODO,
@@ -62,7 +62,7 @@ export function removeTodo(id, text) {
 export function editTodo(id, text) {
   return function (dispatch) {
     axios
-      .put(`http://localhost:2000/todos/${id}/update`, {
+      .put(`http://localhost:2000/todos/${id}/`, {
         text: text
       })
       .then(() => {
@@ -81,7 +81,7 @@ export function editTodo(id, text) {
 export function completeTodo({ _id, isCompleted }) {
   return function (dispatch) {
     axios
-      .put(`http://localhost:2000/todos/${_id}/update`, {
+      .put(`http://localhost:2000/todos/${_id}/`, {
         isCompleted: !isCompleted
       })
       .then(() => {
@@ -97,7 +97,7 @@ export function completeTodo({ _id, isCompleted }) {
 export function completeAllTodos(areAllChecked) {
   return function (dispatch) {
     axios
-      .put(`http://localhost:2000/todos/updateMany`, {
+      .put(`http://localhost:2000/todos/`, {
         isCompleted: areAllChecked
       })
       .then(() => {
@@ -112,7 +112,7 @@ export function completeAllTodos(areAllChecked) {
 export function clearCompleted() {
   return function (dispatch) {
     axios
-      .delete(`http://localhost:2000/todos/deleteCompleted/`)
+      .delete(`http://localhost:2000/todos/`)
       .then(() => {
         dispatch({
           type: CLEAR_COMPLETED

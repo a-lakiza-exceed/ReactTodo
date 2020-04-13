@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 import { ToastContainer } from "react-toastify";
 import Register from "../components/Register";
 import Login from "../components/Login";
-import PrivateRoute from "../components/private-root/PrivateRoot";
+import PrivateRoute from "../components/private-route/PrivateRoute";
 
 class App extends React.Component {
 
@@ -16,9 +16,9 @@ class App extends React.Component {
           <Navbar />
           <Switch>
             <PrivateRoute exact path="/" component={MainSection} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
           </Switch>
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/login" component={Login} />
           <ToastContainer />
         </div>
       </Router>

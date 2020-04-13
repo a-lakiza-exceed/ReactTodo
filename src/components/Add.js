@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
-import { addTodo, completeAllTodos } from "../actions/todoActions";
+import { addTodo, completeAllTodos } from "../redux/actions/todoActions";
 
 class Add extends React.Component {
   state = {
