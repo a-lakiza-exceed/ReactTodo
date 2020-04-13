@@ -10,12 +10,13 @@ import {
   COMPLETE_ALL_TODOS
 } from "../types/actionTypes";
 
-export function addTodo(text) {
-  return function(dispatch) {
+export function addTodo(text, userId) {
+  return function (dispatch) {
     axios
       .post(`http://localhost:2000/todos/create/`, {
         text,
-        isCompleted: false
+        isCompleted: false,
+        userId
       })
       .then(res => {
         dispatch({
@@ -28,10 +29,10 @@ export function addTodo(text) {
   };
 }
 
-export function loadData() {
-  return function(dispatch) {
-    axios
-      .get(`http://localhost:2000/todos/`)
+export function loadData(id) {
+  return function (dispatch) {
+    return axios
+      .get(`http://localhost:2000/todos/${id}`,  )
       .then(res => {
         const todos = [...res.data].reverse();
         dispatch({
@@ -44,7 +45,7 @@ export function loadData() {
 }
 
 export function removeTodo(id, text) {
-  return function(dispatch) {
+  return function (dispatch) {
     axios
       .delete(`http://localhost:2000/todos/${id}/delete`)
       .then(() => {
@@ -59,7 +60,7 @@ export function removeTodo(id, text) {
 }
 
 export function editTodo(id, text) {
-  return function(dispatch) {
+  return function (dispatch) {
     axios
       .put(`http://localhost:2000/todos/${id}/update`, {
         text: text
@@ -78,7 +79,7 @@ export function editTodo(id, text) {
 }
 
 export function completeTodo({ _id, isCompleted }) {
-  return function(dispatch) {
+  return function (dispatch) {
     axios
       .put(`http://localhost:2000/todos/${_id}/update`, {
         isCompleted: !isCompleted
@@ -94,7 +95,7 @@ export function completeTodo({ _id, isCompleted }) {
 }
 
 export function completeAllTodos(areAllChecked) {
-  return function(dispatch) {
+  return function (dispatch) {
     axios
       .put(`http://localhost:2000/todos/updateMany`, {
         isCompleted: areAllChecked
@@ -109,7 +110,7 @@ export function completeAllTodos(areAllChecked) {
 }
 
 export function clearCompleted() {
-  return function(dispatch) {
+  return function (dispatch) {
     axios
       .delete(`http://localhost:2000/todos/deleteCompleted/`)
       .then(() => {

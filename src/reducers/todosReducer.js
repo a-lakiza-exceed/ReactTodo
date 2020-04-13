@@ -35,7 +35,7 @@ export const todosReducer = (state = initialState, action) => {
       return {
         ...state,
         todos: state.todos.filter(todo => todo._id !== action.payload),
-        areAllCompleted: state.todos.length > 1
+        areAllCompleted: state.todos.length > 1 ? state.areAllCompleted : false
       };
 
     case EDIT_TODO:

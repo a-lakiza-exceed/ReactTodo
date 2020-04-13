@@ -22,7 +22,7 @@ class Add extends React.Component {
     e.preventDefault();
     const { text } = this.state;
     if (text.trim()) {
-      this.props.addTodo(text);
+      this.props.addTodo(text, this.props.userId);
     } else {
       toast.warning("Invalid value");
     }
@@ -62,7 +62,8 @@ Add.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    areAllCompleted: state.todos.areAllCompleted
+    areAllCompleted: state.todos.areAllCompleted,
+    userId: state.auth.user.id
   };
 };
 const mapDispatchToProps = {
