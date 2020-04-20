@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { GoogleLogin } from 'react-google-login';
 import { loginUser } from "../redux/actions/authActions";
 import { validateLoginInput } from '../utils/validate'
 import classnames from "classnames";
@@ -104,15 +105,28 @@ class Login extends Component {
                     width: "150px",
                     borderRadius: "3px",
                     letterSpacing: "1.5px",
-                    marginTop: "1rem"
+                    marginTop: "1rem",
+                    marginRight: '10px'
                   }}
                   type="submit"
                   className="btn btn-large waves-effect waves-light hoverable blue accent-3"
                 >
                   Login
                 </button>
+
               </div>
             </form>
+            <a
+              style={{
+                borderRadius: "3px",
+                letterSpacing: "1.5px",
+                marginTop: "1rem",
+              }}
+              href='http://localhost:2000/user/google/login'
+              className="btn btn-large waves-effect waves-light hoverable red accent-3"
+            >
+              Login with google
+                </a>
           </div>
         </div>
       </div>

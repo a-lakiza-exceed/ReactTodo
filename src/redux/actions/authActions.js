@@ -13,7 +13,7 @@ export const registerUser = (userData, history) => dispatch => {
     .then(res => history.push("/login"))
     .catch(err => {
       toast.error(`${err.response.data.name}`)
-      }
+    }
     );
 };
 
@@ -29,7 +29,7 @@ export const loginUser = userData => dispatch => {
     })
     .catch(err => {
       toast.error(`${err.response.data.emailnotfound}`)
-      }
+    }
     );
 };
 

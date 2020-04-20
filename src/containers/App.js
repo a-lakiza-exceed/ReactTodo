@@ -8,7 +8,6 @@ import Login from "../components/Login";
 import PrivateRoute from "../components/private-route/PrivateRoute";
 
 class App extends React.Component {
-
   render() {
     return (
       <Router>

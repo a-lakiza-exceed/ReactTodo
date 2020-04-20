@@ -1,5 +1,6 @@
 import React from "react";
 import jwt_decode from "jwt-decode";
+import queryString from "query-string";
 import ReactDOM from "react-dom";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
@@ -12,13 +13,19 @@ import { setCurrentUser, logoutUser } from "./redux/actions/authActions";
 import App from "./containers/App";
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const query = queryString.parse(window.location.search);
 const store = createStore(rootReducer, composeEnhancer(applyMiddleware(thunk)));
 const app = (
   <Provider store={store}>
     <App />
   </Provider>
 );
+
 ReactDOM.render(app, document.getElementById("root"));
+
+if (query.token) {
+  localStorage.setItem("jwtToken", query.token);
+}
 
 if (localStorage.jwtToken) {
   const token = localStorage.jwtToken;

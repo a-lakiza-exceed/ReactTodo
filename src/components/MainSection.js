@@ -9,10 +9,11 @@ import Footer from "../components/Footer";
 import { loadData } from "../redux/actions/todoActions";
 
 class MainSection extends React.Component {
+
     componentDidMount() {
         this.props.loadData(this.props.auth.user.id);
     }
-    
+
     render() {
         const { todos } = this.props;
         return (
