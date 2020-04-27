@@ -109,7 +109,7 @@ class Login extends Component {
                     marginRight: '10px'
                   }}
                   type="submit"
-                  className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+                  className="btn btn-large waves-effect waves-light hoverable  accent-3"
                 >
                   Login
                 </button>
@@ -126,6 +126,17 @@ class Login extends Component {
               className="btn btn-large waves-effect waves-light hoverable red accent-3"
             >
               Login with google
+                </a>
+            <a
+              style={{
+                borderRadius: "3px",
+                letterSpacing: "1.5px",
+                marginTop: "1rem",
+              }}
+              href='http://localhost:2000/user/facebook/login'
+              className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+            >
+              Login with facebook
                 </a>
           </div>
         </div>
