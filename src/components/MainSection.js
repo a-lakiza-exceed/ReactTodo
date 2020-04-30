@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import "../containers/App.css";
+import Add from "components/Add";
+import Todos from "components/Todos";
+import Footer from "components/Footer";
+import { loadData } from "redux/actions/todoActions";
+import "containers/App.css";
 import "react-toastify/dist/ReactToastify.css";
-import Add from "../components/Add";
-import Todos from "../components/Todos";
-import Footer from "../components/Footer";
-import { loadData } from "../redux/actions/todoActions";
 
 class MainSection extends React.Component {
 

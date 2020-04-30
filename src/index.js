@@ -1,20 +1,17 @@
 import React from "react";
 import jwt_decode from "jwt-decode";
-import queryString from "query-string";
 import ReactDOM from "react-dom";
-import * as serviceWorker from "./serviceWorker";
+import queryString from "query-string";
 import { Provider } from "react-redux";
-import { createStore, compose, applyMiddleware } from "redux";
-import { rootReducer } from "./redux/reducers/rootReducer";
-import thunk from "redux-thunk";
-import "./index.css";
-import setAuthToken from "./utils/setAuthToken";
-import { setCurrentUser, logoutUser } from "./redux/actions/authActions";
-import App from "./containers/App";
+import * as serviceWorker from "serviceWorker";
+import App from "containers/App";
+import setAuthToken from "utils/setAuthToken";
+import store from 'redux/store/index'
+import { setCurrentUser, logoutUser } from "redux/actions/authActions";
+import "index.css";
 
-const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const query = queryString.parse(window.location.search);
-const store = createStore(rootReducer, composeEnhancer(applyMiddleware(thunk)));
+
 const app = (
   <Provider store={store}>
     <App />

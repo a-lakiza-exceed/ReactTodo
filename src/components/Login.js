@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { GoogleLogin } from 'react-google-login';
-import { loginUser } from "../redux/actions/authActions";
-import { validateLoginInput } from '../utils/validate'
 import classnames from "classnames";
+import { loginUser } from "redux/actions/authActions";
+import { validateLoginInput } from 'utils/validate'
 
 class Login extends Component {
   constructor() {
@@ -122,7 +121,7 @@ class Login extends Component {
                 letterSpacing: "1.5px",
                 marginTop: "1rem",
               }}
-              href='http://localhost:2000/user/google/login'
+              href={process.env.REACT_APP_GOOGLE_LOGIN}
               className="btn btn-large waves-effect waves-light hoverable red accent-3"
             >
               Login with google
@@ -133,7 +132,7 @@ class Login extends Component {
                 letterSpacing: "1.5px",
                 marginTop: "1rem",
               }}
-              href='http://localhost:2000/user/facebook/login'
+              href={process.env.REACT_APP_FACEBOOK_LOGIN}
               className="btn btn-large waves-effect waves-light hoverable blue accent-3"
             >
               Login with facebook

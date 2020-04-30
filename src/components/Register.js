@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { registerUser } from "../redux/actions/authActions";
 import classnames from "classnames";
-import { validateRegisterInput } from '../utils/validate'
+import { registerUser } from "redux/actions/authActions";
+import { validateRegisterInput } from 'utils/validate'
 
 class Register extends Component {
   constructor() {

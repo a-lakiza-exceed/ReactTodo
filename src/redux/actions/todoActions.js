@@ -1,5 +1,6 @@
-import axios from "axios";
+import { createAction } from '@reduxjs/toolkit'
 import { toast } from "react-toastify";
+import * as API from 'utils/API'
 import {
   ADD_TODO,
   LOAD_DATA,
@@ -8,21 +9,27 @@ import {
   COMPLETE_TODO,
   CLEAR_COMPLETED,
   COMPLETE_ALL_TODOS
-} from "../types/actionTypes";
+} from "redux/types/actionTypes";
+
+export const add_todo = createAction(ADD_TODO)
+
+export const load_data = createAction(LOAD_DATA)
+
+export const remove_todo = createAction(REMOVE_TODO)
+
+export const edit_todo = createAction(EDIT_TODO)
+
+export const complete_todo = createAction(COMPLETE_TODO)
+
+export const clear_completed = createAction(CLEAR_COMPLETED)
+
+export const complete_all_todos = createAction(COMPLETE_ALL_TODOS)
 
 export function addTodo(text, userId) {
   return function (dispatch) {
-    axios
-      .post(`http://localhost:2000/todos/`, {
-        text,
-        isCompleted: false,
-        userId
-      })
+    API.createTodo(text, userId)
       .then(res => {
-        dispatch({
-          type: ADD_TODO,
-          payload: res.data
-        });
+        dispatch(add_todo(res.data));
         toast.success(`Added todo: ${text}`);
       })
       .catch(err => toast.error(`${err}`));
@@ -31,14 +38,10 @@ export function addTodo(text, userId) {
 
 export function loadData(id) {
   return function (dispatch) {
-    return axios
-      .get(`http://localhost:2000/todos/${id}`,  )
+    API.loadTodos(id)
       .then(res => {
         const todos = [...res.data].reverse();
-        dispatch({
-          type: LOAD_DATA,
-          payload: todos
-        });
+        dispatch(load_data(todos));
       })
       .catch(err => toast.error(`${err}`));
   };
@@ -46,13 +49,9 @@ export function loadData(id) {
 
 export function removeTodo(id, text) {
   return function (dispatch) {
-    axios
-      .delete(`http://localhost:2000/todos/${id}/`)
+    API.deleteTodo(id)
       .then(() => {
-        dispatch({
-          type: REMOVE_TODO,
-          payload: id
-        });
+        dispatch(remove_todo(id));
         toast.info(`Removed: ${text}`);
       })
       .catch(err => toast.error(`${err}`));
@@ -61,18 +60,13 @@ export function removeTodo(id, text) {
 
 export function editTodo(id, text) {
   return function (dispatch) {
-    axios
-      .put(`http://localhost:2000/todos/${id}/`, {
-        text: text
-      })
+    API.editTodo(id, text)
       .then(() => {
-        dispatch({
-          type: EDIT_TODO,
-          payload: {
-            id,
-            text
-          }
-        });
+        dispatch(edit_todo({
+          id,
+          text
+        })
+        );
       })
       .catch(err => toast.error(`${err}`));
   };
@@ -80,30 +74,19 @@ export function editTodo(id, text) {
 
 export function completeTodo({ _id, isCompleted }) {
   return function (dispatch) {
-    axios
-      .put(`http://localhost:2000/todos/${_id}/`, {
-        isCompleted: !isCompleted
-      })
+    API.completeTodo(_id, !isCompleted)
       .then(() => {
-        dispatch({
-          type: COMPLETE_TODO,
-          payload: _id
-        });
+        dispatch(complete_todo(_id));
       })
       .catch(err => toast.error(`${err}`));
   };
 }
 
-export function completeAllTodos(areAllChecked) {
+export function completeAllTodos(isCompleted) {
   return function (dispatch) {
-    axios
-      .put(`http://localhost:2000/todos/`, {
-        isCompleted: areAllChecked
-      })
+    API.completeAllTodos(isCompleted)
       .then(() => {
-        dispatch({
-          type: COMPLETE_ALL_TODOS
-        });
+        dispatch(complete_all_todos());
       })
       .catch(err => toast.error(`${err}`));
   };
@@ -111,12 +94,9 @@ export function completeAllTodos(areAllChecked) {
 
 export function clearCompleted() {
   return function (dispatch) {
-    axios
-      .delete(`http://localhost:2000/todos/`)
+    API.clearCompleted()
       .then(() => {
-        dispatch({
-          type: CLEAR_COMPLETED
-        });
+        dispatch(clear_completed());
       })
       .catch(err => toast.error(`${err}`));
   };

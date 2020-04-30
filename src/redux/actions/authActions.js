@@ -1,15 +1,17 @@
-import axios from "axios";
-import setAuthToken from "../../utils/setAuthToken";
+import { createAction } from '@reduxjs/toolkit'
 import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
+import setAuthToken from "utils/setAuthToken";
 import {
-  SET_CURRENT_USER,
-  USER_LOADING
-} from "../types/actionTypes";
+  register,
+  login
+} from 'utils/API'
+import { SET_CURRENT_USER } from "redux/types/actionTypes";
+
+export const setCurrentUser = createAction(SET_CURRENT_USER)
 
 export const registerUser = (userData, history) => dispatch => {
-  axios
-    .post("http://localhost:2000/user/register/", userData)
+  register(userData)
     .then(res => history.push("/login"))
     .catch(err => {
       toast.error(`${err.response.data.name}`)
@@ -18,32 +20,18 @@ export const registerUser = (userData, history) => dispatch => {
 };
 
 export const loginUser = userData => dispatch => {
-  axios
-    .post("http://localhost:2000/user/login/", userData)
+  login(userData)
     .then(res => {
       const { token } = res.data;
       localStorage.setItem("jwtToken", token);
       setAuthToken(token);
       const decoded = jwt_decode(token);
-      dispatch(setCurrentUser(decoded));
+      dispatch(setCurrentUser({ decoded }));
     })
     .catch(err => {
       toast.error(`${err.response.data.emailnotfound}`)
     }
     );
-};
-
-export const setCurrentUser = decoded => {
-  return {
-    type: SET_CURRENT_USER,
-    payload: decoded
-  };
-};
-
-export const setUserLoading = () => {
-  return {
-    type: USER_LOADING
-  };
 };
 
 export const logoutUser = () => dispatch => {

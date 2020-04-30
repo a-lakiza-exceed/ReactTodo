@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
-import { removeTodo, editTodo, completeTodo } from "../redux/actions/todoActions";
-import Checkbox from "./Checkbox";
-import { SHOW_ALL, SHOW_ACTIVE } from "../redux/types/filterTypes";
-const classNames = require("classnames");
+import Checkbox from "components/Checkbox";
+import { SHOW_ALL, SHOW_ACTIVE } from "redux/types/filterTypes";
+import { removeTodo, editTodo, completeTodo } from "redux/actions/todoActions";
 
 class TodoItem extends React.Component {
   state = {

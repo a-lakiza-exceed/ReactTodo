@@ -1,7 +1,7 @@
+import { createReducer } from '@reduxjs/toolkit'
 import {
-    SET_CURRENT_USER,
-    USER_LOADING
-} from "../types/actionTypes";
+    setCurrentUser
+} from "redux/actions/authActions";
 
 const initialState = {
     isAuthenticated: false,
@@ -9,20 +9,9 @@ const initialState = {
     loading: false
 };
 
-export const authReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case SET_CURRENT_USER:    
-            return {
-                ...state,
-                isAuthenticated: !(Object.keys(action.payload).length === 0),
-                user: action.payload
-            };
-        case USER_LOADING:
-            return {
-                ...state,
-                loading: true
-            };
-        default:
-            return state;
+export const authReducer = createReducer(initialState, {
+    [setCurrentUser]: (state, action) => {
+        state.isAuthenticated = !(Object.keys(action.payload).length === 0)
+        state.user = action.payload
     }
-}
+})

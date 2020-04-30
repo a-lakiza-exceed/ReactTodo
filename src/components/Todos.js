@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import TodoItem from "./TodoItem";
 import { connect } from "react-redux";
+import TodoItem from "components/TodoItem";
 
 const Todos = ({ todos }) => {
   const renderTodos = () => {
